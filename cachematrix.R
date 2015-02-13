@@ -1,15 +1,34 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Two methods, one which creates a list of functions for managing a matrix and its reverse and the other method for lazy-solving the matrix
 
-## Write a short comment describing this function
+## Creates a list of functions for managing a matrix and its reverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+	r <- NULL
+	set <- function(y) {
+		x<<-y
+		r<<-null
+	}
+	get <- function() x
+	setReverse <- function(reverse) r <<- reverse
+	getReverse <- function() r
+	list (set = set, 
+		get = get, 
+		setReverse = setReverse, 
+		getReverse = getReverse)
 }
 
 
-## Write a short comment describing this function
+## if the matrix is already solved then it uses the existing solution otherwise
+## it calculates the reverse of the matrix and caches it for future use
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        r <- x$getReverse()
+        if (!is.null(r)) {
+        	message ("getting cached reverse")
+        	return(r)
+        }
+        matrix <- x$get()
+        r <- solve(matrix)
+        x$setReverse(r)
+        r
 }
